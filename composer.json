@@ -23,7 +23,8 @@
         "source": "https://bitbucket.org/loveorigami/lo-module-import"
     },
     "require": {
-        "yiisoft/yii2": "~2"
+        "yiisoft/yii2": "~2",
+		"league/csv": "*"
     },
     "autoload": {
         "psr-4": {
