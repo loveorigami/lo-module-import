@@ -1,15 +1,14 @@
 <?php
 /**
- * @var \app\modules\import\models\CsvModel $model модель
- * @var \common\db\ActiveRecord $importModel
+ * @var \lo\modules\import\models\CsvModel $model модель
+ * @var \lo\core\db\ActiveRecord $importModel
  */
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
-$this->title = Yii::t('import/app', 'Attributes to columns mapping');
+
+$this->title = Yii::t('import', 'Attributes to columns mapping');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
-<h1><?= $this->title ?></h1>
 
 <div class="row">
     <div class="co-xs-12 col-md-8 col-lg-6">
@@ -33,9 +32,9 @@ $this->params['breadcrumbs'][] = $this->title;
         </table>
         <div class="form-group">
 
-            <?= Html::submitButton(Yii::t('import/app', 'Start import'), ['class' => 'btn btn-primary']) ?>
+            <?= Html::submitButton(Yii::t('import', 'Start import'), ['class' => 'btn btn-primary']) ?>
 
-            <?= Html::a(Yii::t('import/app', 'Back'), ['/import/admin/csv-import'], ['class'=>'btn btn-default']) ?>
+            <?= Html::a(Yii::t('import', 'Back'), ['index'], ['class'=>'btn btn-default']) ?>
 
         </div>
 

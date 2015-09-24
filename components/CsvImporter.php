@@ -32,69 +32,60 @@ class CsvImporter extends Object
     public function import(CsvModel $model)
     {
 
-        if(!$model->validate())
+        if (!$model->validate())
             return false;
 
         if (($handle = $model->openFile()) !== false) {
 
             $errors = 0;
-
             $ok = 0;
-
             $i = 0;
 
             while (($data = $model->readLine($handle)) !== false) {
-
                 $i++;
 
-                if($i==1 AND $model->headLine)
+                if ($i == 1 AND $model->headLine)
                     continue;
 
                 $cls = $model->modelClass;
-
                 $key = $model->key;
 
-                if(isset($model->mapping[$key]) AND !empty($data[$model->mapping[$key]])) {
-
-                    $importModel = $cls::findOne([$key=>$data[$model->mapping[$key]]]);
-
+                if (isset($model->mapping[$key]) AND !empty($data[$model->mapping[$key]])) {
+                    $importModel = $cls::findOne([$key => $data[$model->mapping[$key]]]);
                 }
 
-                if(empty($importModel))
-                    $importModel = $this->createImportModel($cls, ["scenario"=>ActiveRecord::SCENARIO_INSERT]);
+                if (empty($importModel))
+                    $importModel = $this->createImportModel($cls, ["scenario" => ActiveRecord::SCENARIO_INSERT]);
 
-                foreach($model->mapping AS $attr => $index) {
+                foreach ($model->mapping AS $attr => $index) {
 
-                    if(!is_numeric($index))
+                    if (!is_numeric($index))
                         continue;
 
-                    if($key == 'id' AND $attr == $key)
+                    if ($key == 'id' AND $attr == $key)
                         continue;
 
-                    $val = isset($data[$index])?$data[$index]:null;
-
-                    $val = $this->isJson($val)?json_decode($val):$val;
+                    $val = isset($data[$index]) ? $data[$index] : null;
+                    $val = $this->isJson($val) ? json_decode($val) : $val;
 
                     $importModel->$attr = $val;
-
                 }
 
-                if(!$model->validate AND $importModel->hasAttribute('active')) {
-                    $importModel->active=false;
+                if (!$model->validate AND $importModel->hasAttribute('active')) {
+                    $importModel->active = false;
                 }
 
-                if($importModel->save($model->validate))
+                if ($importModel->save($model->validate))
                     $ok++;
                 else
                     $errors++;
 
                 unset($importModel);
-
             }
 
             $model->closeFile($handle);
 
-            return ["ok"=>$ok, "errors"=>$errors];
+            return ["ok" => $ok, "errors" => $errors];
 
         }
 
@@ -107,7 +98,8 @@ class CsvImporter extends Object
      * @param $string
      * @return bool
      */
-    public function isJson($string) {
+    public function isJson($string)
+    {
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
@@ -119,12 +111,12 @@ class CsvImporter extends Object
      * @return \yii\db\ActiveRecord
      * @throws ErrorException
      */
-    public function createImportModel($cls, $config=[])
+    public function createImportModel($cls, $config = [])
     {
 
         $importModel = new $cls($config);
 
-        if(! $importModel instanceof ICsvImportable)
+        if (!$importModel instanceof ICsvImportable)
             throw new ErrorException(get_class($importModel) . ' does not implement \app\modules\import\models\ICsvImportable');
 
         return $importModel;
@@ -139,21 +131,15 @@ class CsvImporter extends Object
      */
     public function getCsvAttributes($cls)
     {
-
         $importModel = $this->createImportModel($cls);
-
         $attrs = $importModel->getCsvAttributes();
-
         $arr = [];
 
-        foreach($attrs as $attr) {
-
+        foreach ($attrs as $attr) {
             $arr[$attr] = $importModel->getAttributeLabel($attr);
-
         }
 
         return $arr;
-
     }
 
     /**
@@ -162,15 +148,12 @@ class CsvImporter extends Object
      */
     public function getClasses()
     {
-        $arr = ArrayHelper::map($this->allowedModels, function($data){
+        $arr = ArrayHelper::map($this->allowedModels, function ($data) {
             return $data;
-        }, function($data){
+        }, function ($data) {
             return $data::getEntityName();
         });
 
         return $arr;
-
     }
-
-
-} 
+}

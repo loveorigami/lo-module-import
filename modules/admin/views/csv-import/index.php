@@ -12,8 +12,6 @@ $this->title = Yii::t('common', 'Csv import');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
-<h1><?= $this->title ?></h1>
-
 <div class="row">
     <div class="co-xs-12 col-md-7 col-lg-5">
 
@@ -22,22 +20,25 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'modelClass')->widget(DependDropDown::className(), [
             "dependAttr"=>"key",
-            "source"=>["/import/admin/csv-import/keys"],
+            "source"=>["csv-import/keys"],
             "data"=>$classes,
             "serverAttr"=>"cls",
             "triggerChange"=>true,
             "options"=>["class"=>"form-control"],
         ]) ?>
 
-        <?= $form->field($model, 'filePath')->widget(\mihaildev\elfinder\InputFile::className(), [
-            "template"=>'<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
-            "options" => [
-                "class" => "form-control"
-            ],
-            "buttonOptions" => [
-                "class" => "btn btn-default"
-            ],
-        ]) ?>
+        <?= $form->field($model, 'filePath')->widget(\mihaildev\elfinder\InputFile::className(),
+            [
+                "template"=>'<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+                'path' => 'import',
+                "options" => [
+                    "class" => "form-control"
+                ],
+                "buttonOptions" => [
+                    "class" => "btn btn-info"
+                ],
+            ]
+        ) ?>
 
         <?= $form->field($model, 'headLine')->checkbox(); ?>
 

@@ -35,7 +35,7 @@ class CsvModel extends Model
     /**
      * @var string папка относительно которой задается путь к файлу
      */
-    public $filesDir = "@webapp/web";
+    public $filesDir = "@storage";
 
     /**
      * @var bool первая строка файла содержит названия полей
@@ -109,14 +109,12 @@ class CsvModel extends Model
      */
     public function openFile()
     {
-
-        $path = Yii::getAlias($this->filesDir . $this->filePath);
-
+        //echo $this->filesDir;
+        $path = Yii::getAlias('@storage'.$this->filePath);
         if(!is_file($path))
             return false;
 
         return fopen($path, "r");
-
     }
 
     /**
@@ -144,21 +142,15 @@ class CsvModel extends Model
      */
     public function readFirstLine()
     {
-
         $handle = $this->openFile();
 
         if($handle !== false) {
-
             $data = $this->readLine($handle);
-
             $this->closeFile($handle);
-
             return $data;
-
         }
 
         return false;
-
     }
 
     /**
@@ -167,26 +159,16 @@ class CsvModel extends Model
      */
     public function getColumns()
     {
-
         $data = $this->readFirstLine();
 
         if($data) {
-
             if($this->headLine) {
-
                 return $data;
-
-
             } else {
-
                 $keys = range(0, count($data)-1);
-
                 return array_combine($keys, $keys);
-
             }
-
         }
-
         return [];
     }
 
@@ -198,20 +180,16 @@ class CsvModel extends Model
         if($this->headLine) {
 
             $columns = $this->getColumns();
-
             $importModel = Yii::$app->getModule('import')->csvImporter->createImportModel($this->modelClass);
 
             foreach($columns as $index => $attr) {
-
                 $csvAttrs = $importModel->getCsvAttributes();
 
                 if(!in_array($attr, $csvAttrs))
                     continue;
 
                 $this->mapping[$attr] = $index;
-
             }
-
         }
     }
 
