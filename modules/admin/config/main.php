@@ -10,6 +10,7 @@ return [
                     'class'=> \lo\modules\import\components\CsvImporter::className(),
                     'allowedModels'=>[
                         \lo\modules\page\models\Page::className(),                    
+                        \lo\modules\love\models\Author::className(),
 					],
                 ],
             ],

@@ -40,6 +40,7 @@ class CsvImporter extends Object
             $errors = 0;
             $ok = 0;
             $i = 0;
+            $model->saveMap();
 
             while (($data = $model->readLine($handle)) !== false) {
                 $i++;
@@ -62,8 +63,8 @@ class CsvImporter extends Object
                     if (!is_numeric($index))
                         continue;
 
-                    if ($key == 'id' AND $attr == $key)
-                        continue;
+                    /*if ($key == 'id' AND $attr == $key)
+                        continue; перезапись id*/
 
                     $val = isset($data[$index]) ? $data[$index] : null;
                     $val = $this->isJson($val) ? json_decode($val) : $val;
@@ -103,6 +104,7 @@ class CsvImporter extends Object
         json_decode($string);
         return (json_last_error() == JSON_ERROR_NONE);
     }
+
 
     /**
      * Создает экземпляр импортируемой модели
@@ -151,9 +153,11 @@ class CsvImporter extends Object
         $arr = ArrayHelper::map($this->allowedModels, function ($data) {
             return $data;
         }, function ($data) {
-            return $data::getEntityName();
+            return $data;
         });
 
         return $arr;
     }
+
+
 }

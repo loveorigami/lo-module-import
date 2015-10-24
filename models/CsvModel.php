@@ -110,11 +110,33 @@ class CsvModel extends Model
     public function openFile()
     {
         //echo $this->filesDir;
-        $path = Yii::getAlias('@storage'.$this->filePath);
+        $path = Yii::getAlias($this->filesDir.$this->filePath);
         if(!is_file($path))
             return false;
 
         return fopen($path, "r");
+    }
+
+    /**
+     * Открывает файл
+     * @return bool|resource
+     */
+    public function getFileName()
+    {
+        $path = Yii::getAlias($this->filesDir.$this->filePath);
+        $file = basename($path, ".csv"); // $file is set to "index"
+        return $file;
+    }
+
+    /**
+     * Открывает файл
+     * @return bool|resource
+     */
+    public function getDir()
+    {
+        $path = Yii::getAlias($this->filesDir.$this->filePath);
+        $dir = dirname($path); // $file is set to "index"
+        return $dir;
     }
 
     /**
@@ -182,6 +204,9 @@ class CsvModel extends Model
             $columns = $this->getColumns();
             $importModel = Yii::$app->getModule('import')->csvImporter->createImportModel($this->modelClass);
 
+            $map = $this->getMap();
+            if($map) return $this->mapping = $map;
+
             foreach($columns as $index => $attr) {
                 $csvAttrs = $importModel->getCsvAttributes();
 
@@ -191,6 +216,31 @@ class CsvModel extends Model
                 $this->mapping[$attr] = $index;
             }
         }
+    }
+
+    /**
+     * Сохраняем файл json
+     * @param $string
+     * @return bool
+     */
+    public function saveMap()
+    {
+        $dir = $this->getDir();
+        $filename = $this->getFileName().'.json';
+        $data = json_encode($this->mapping);
+        file_put_contents($dir.DIRECTORY_SEPARATOR.$filename, $data);
+    }
+
+    public function getMap()
+    {
+        $dir = $this->getDir();
+        $filename = $this->getFileName().'.json';
+        $path = $dir.DIRECTORY_SEPARATOR.$filename;
+
+        if(!is_file($path)) return false;
+
+        $data = file_get_contents($path);
+        return json_decode($data, true);
     }
 
 } 

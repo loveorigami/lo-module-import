@@ -86,6 +86,8 @@ class CsvImportController extends Controller
         if(empty($model->mapping))
             $model->loadMapping();
 
+        //var_dump($model->mapping);
+
         $importModel = $importer->createImportModel($model->modelClass);
 
         return $this->render('import', ["model"=>$model, "importModel"=>$importModel]);
@@ -99,6 +101,7 @@ class CsvImportController extends Controller
     public function actionKeys($cls)
     {
         $attrs = Yii::$app->getModule('import')->csvImporter->getCsvAttributes($cls);
+
         foreach($attrs AS $k => $v) {
             echo Html::tag('option', $v, ['value'=>$k]);
         }

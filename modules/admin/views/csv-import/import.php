@@ -24,7 +24,10 @@ $this->params['breadcrumbs'][] = $this->title;
                             <span class="label label-default"><?=$importModel->getAttributeLabel($attr)?>:</span>
                         </td>
                         <td>
-                            <?= $form->field($model, "mapping[$attr]")->dropDownList($model->getColumns(), ['prompt'=>'']) ?>
+                            <?= $form->field($model, "mapping[$attr]",
+                                [
+                                    'template' => '<div class="col-md-12">{input}</div>']
+                            )->dropDownList($model->getColumns(), ['prompt'=>'']) ?>
                         </td>
                     </tr>
                 <?endforeach;?>
