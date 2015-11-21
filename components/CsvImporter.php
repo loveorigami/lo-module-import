@@ -42,14 +42,17 @@ class CsvImporter extends Object
             $i = 0;
             $model->saveMap();
 
+            $cls = $model->modelClass;
+            $key = $model->key;
+            $callbacks = $this->getCsvCallbacks($cls);
+
             while (($data = $model->readLine($handle)) !== false) {
                 $i++;
 
                 if ($i == 1 AND $model->headLine)
                     continue;
 
-                $cls = $model->modelClass;
-                $key = $model->key;
+
 
                 if (isset($model->mapping[$key]) AND !empty($data[$model->mapping[$key]])) {
                     $importModel = $cls::findOne([$key => $data[$model->mapping[$key]]]);
@@ -68,6 +71,10 @@ class CsvImporter extends Object
 
                     $val = isset($data[$index]) ? $data[$index] : null;
                     $val = $this->isJson($val) ? json_decode($val) : $val;
+
+                    if(isset($callbacks[$attr])  && is_callable([$cls, $callbacks[$attr]])){
+                        $val = call_user_func([$cls, $callbacks[$attr]], $val);
+                    }
 
                     $importModel->$attr = $val;
                 }
@@ -141,6 +148,19 @@ class CsvImporter extends Object
             $arr[$attr] = $importModel->getAttributeLabel($attr);
         }
 
+        return $arr;
+    }
+
+    /**
+     * Возвращает массив названий атрибутов доступных для обработки
+     * @param string $cls класс импортируемой модели
+     * @return array
+     * @throws ErrorException
+     */
+    public function getCsvCallbacks($cls)
+    {
+        $importModel = $this->createImportModel($cls);
+        $arr = $importModel->getCsvCallbacks();
         return $arr;
     }
 

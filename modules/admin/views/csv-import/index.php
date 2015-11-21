@@ -32,7 +32,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 "template"=>'<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
                 'path' => 'import',
                 "options" => [
-                    "class" => "form-control"
+                    "class" => "form-control",
+                    'value' => '/import/love__authors.csv'
                 ],
                 "buttonOptions" => [
                     "class" => "btn btn-info"

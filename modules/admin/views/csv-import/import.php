@@ -8,6 +8,7 @@ use yii\helpers\Html;
 
 $this->title = Yii::t('import', 'Attributes to columns mapping');
 $this->params['breadcrumbs'][] = $this->title;
+$callbacks = $importModel->getCsvCallBacks();
 ?>
 
 <div class="row">
@@ -18,7 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
                 <?php
                 $form = ActiveForm::begin() ?>
 
-                <?foreach($importModel->getCsvAttributes() as $attr):?>
+                <?php foreach($importModel->getCsvAttributes() as $attr):?>
                     <tr>
                         <td>
                             <span class="label label-default"><?=$importModel->getAttributeLabel($attr)?>:</span>
@@ -28,6 +29,11 @@ $this->params['breadcrumbs'][] = $this->title;
                                 [
                                     'template' => '<div class="col-md-12">{input}</div>']
                             )->dropDownList($model->getColumns(), ['prompt'=>'']) ?>
+                        </td>
+                        <td>
+                        <?php
+                            if(isset($callbacks[$attr])) echo $callbacks[$attr];
+                        ?>
                         </td>
                     </tr>
                 <?endforeach;?>

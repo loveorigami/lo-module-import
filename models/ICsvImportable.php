@@ -16,4 +16,10 @@ interface ICsvImportable
      */
     public function getCsvAttributes();
 
+    /**
+     * Возвращает массив атрибутов для доработки значений
+     * @return array
+     */
+    public function getCsvCallbacks();
+
 } 

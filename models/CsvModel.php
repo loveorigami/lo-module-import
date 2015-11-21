@@ -40,7 +40,7 @@ class CsvModel extends Model
     /**
      * @var bool первая строка файла содержит названия полей
      */
-    public $headLine = false;
+    public $headLine = true;
 
     /**
      * @var string ключ для связи моделей
