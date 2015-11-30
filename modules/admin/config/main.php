@@ -11,6 +11,7 @@ return [
                     'allowedModels'=>[
                         \lo\modules\love\models\Author::className(),
                         \lo\modules\page\models\Page::className(),
+                        \lo\modules\love\models\Lib::className(),
 					],
                 ],
             ],
