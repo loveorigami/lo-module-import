@@ -12,6 +12,8 @@ return [
                         \lo\modules\love\models\Author::className(),
                         \lo\modules\page\models\Page::className(),
                         \lo\modules\love\models\Lib::className(),
+                        \lo\modules\love\models\Prim::className(),
+                        \lo\modules\love\models\Aphorism::className(),
 					],
                 ],
             ],
