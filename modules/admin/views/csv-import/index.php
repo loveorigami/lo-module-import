@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
         <?php
         $form = ActiveForm::begin() ?>
 
-        <?= $form->field($model, 'modelClass')->widget(DependDropDown::className(), [
+        <?= $form->field($model, 'modelClass')->widget(DependDropDown::class, [
             "dependAttr"=>"key",
             "source"=>["csv-import/keys"],
             "data"=>$classes,
@@ -27,7 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
             "options"=>["class"=>"form-control"],
         ]) ?>
 
-        <?= $form->field($model, 'filePath')->widget(\mihaildev\elfinder\InputFile::className(),
+        <?= $form->field($model, 'filePath')->widget(\mihaildev\elfinder\InputFile::class,
             [
                 "template"=>'<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
                 'path' => 'import',
@@ -43,7 +43,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
         <?= $form->field($model, 'headLine')->checkbox(); ?>
 
-        <?= $form->field($model, 'key')->widget(DependDropDown::className(), [
+        <?= $form->field($model, 'key')->widget(DependDropDown::class, [
             "options"=>["class"=>"form-control"],
         ]); ?>
 

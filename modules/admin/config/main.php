@@ -7,13 +7,13 @@ return [
             //'defaultRoute' => 'item'
 			'components'=>[
                 'csvImporter'=>[
-                    'class'=> \lo\modules\import\components\CsvImporter::className(),
+                    'class'=> \lo\modules\import\components\CsvImporter::class,
                     'allowedModels'=>[
-                        \lo\modules\love\models\Author::className(),
-                        \lo\modules\page\models\Page::className(),
-                        \lo\modules\love\models\Lib::className(),
-                        \lo\modules\love\models\Prim::className(),
-                        \lo\modules\love\models\Aphorism::className(),
+                        \lo\modules\love\models\Author::class,
+                        \lo\modules\page\models\Page::class,
+                        \lo\modules\love\models\Lib::class,
+                        \lo\modules\love\models\Prim::class,
+                        \lo\modules\love\models\Aphorism::class,
 					],
                 ],
             ],
